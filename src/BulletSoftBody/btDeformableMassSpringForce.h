@@ -116,62 +116,6 @@ public:
 	// 		}
 	// 	}
 
-	// virtual void addScaledElasticForce(btScalar scale, TVStack& force)
-	// {
-	// 	int numNodes = getNumNodes();
-	// 	btAssert(numNodes <= force.size());
-	// 	for (int i = 0; i < m_softBodies.size(); ++i)
-	// 	{
-	// 		const btSoftBody* psb = m_softBodies[i];
-	// 		if (!psb->isActive())
-	// 		{
-	// 			continue;
-	// 		}
-
-	// 		for (int j = 0; j < psb->m_links.size(); ++j)
-	// 		{
-
-	// 			if (j%5 == 0)
-	// 			{
-	// 				const btSoftBody::Link& link = psb->m_links[j];
-	// 				btSoftBody::Node* node1 = link.m_n[0];
-	// 				btSoftBody::Node* node2 = link.m_n[1];
-	// 				btScalar r = link.m_rl;
-	// 				size_t id1 = node1->index;
-	// 				size_t id2 = node2->index;
-
-	// 				// elastic force
-	// 				btVector3 dir = (node2->m_q - node1->m_q);
-	// 				btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
-	// 				btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*10);
-	// 				btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
-	// 				force[id1] += scaled_force;
-	// 				force[id2] -= scaled_force;
-					
-	// 			}
-	// 			else
-	// 			{
-	// 				const btSoftBody::Link& link = psb->m_links[j];
-	// 				btSoftBody::Node* node1 = link.m_n[0];
-	// 				btSoftBody::Node* node2 = link.m_n[1];
-	// 				btScalar r = link.m_rl;
-	// 				size_t id1 = node1->index;
-	// 				size_t id2 = node2->index;
-
-	// 				// elastic force
-	// 				btVector3 dir = (node2->m_q - node1->m_q);
-	// 				btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
-	// 				btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness);
-	// 				btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
-	// 				force[id1] += scaled_force;
-	// 				force[id2] -= scaled_force;
-					
-	// 			}
-				
-	// 		}
-	// 	}
-	// }
-
 	virtual void addScaledElasticForce(btScalar scale, TVStack& force)
 	{
 		int numNodes = getNumNodes();
@@ -184,10 +128,6 @@ public:
 				continue;
 			}
 
-			// // generate 3 random k and save them to txt file
-			// int rand()
-
-			
 			for (int j = 0; j < psb->m_links.size(); ++j)
 			{
 
@@ -200,30 +140,13 @@ public:
 					size_t id1 = node1->index;
 					size_t id2 = node2->index;
 
-					// // build structured anisotropy
-					int diff = id2 - id1;
-					if (abs(diff) == 1)
-					{
-						// elastic force
-						btVector3 dir = (node2->m_q - node1->m_q);
-						btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
-						btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*1);
-						btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
-						force[id1] += scaled_force;
-						force[id2] -= scaled_force;
-					}
-						
-					// 	elif np.abs(spring.id2 - spring.id1) == 6:
-					// 		spring.force_constant = K[1]
-					// 	elif np.abs(spring.id2 - spring.id1) == 4:
-					// 		spring.force_constant = K[2]
-					// 	else:
-					// 		if int(spring.id1 / 5) % 2 == 0:
-					// 			spring.force_constant = K[1]
-					// 		else:
-					// 			spring.force_constant = K[2]
-
-					
+					// elastic force
+					btVector3 dir = (node2->m_q - node1->m_q);
+					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
+					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*100);
+					btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
+					force[id1] += scaled_force;
+					force[id2] -= scaled_force;
 					
 				}
 				else
@@ -248,6 +171,83 @@ public:
 			}
 		}
 	}
+
+	// virtual void addScaledElasticForce(btScalar scale, TVStack& force)
+	// {
+	// 	int numNodes = getNumNodes();
+	// 	btAssert(numNodes <= force.size());
+	// 	for (int i = 0; i < m_softBodies.size(); ++i)
+	// 	{
+	// 		const btSoftBody* psb = m_softBodies[i];
+	// 		if (!psb->isActive())
+	// 		{
+	// 			continue;
+	// 		}
+
+	// 		// // generate 3 random k and save them to txt file
+	// 		// int rand()
+
+			
+	// 		for (int j = 0; j < psb->m_links.size(); ++j)
+	// 		{
+
+	// 			if (j%5 == 0)
+	// 			{
+	// 				const btSoftBody::Link& link = psb->m_links[j];
+	// 				btSoftBody::Node* node1 = link.m_n[0];
+	// 				btSoftBody::Node* node2 = link.m_n[1];
+	// 				btScalar r = link.m_rl;
+	// 				size_t id1 = node1->index;
+	// 				size_t id2 = node2->index;
+
+	// 				// // build structured anisotropy
+	// 				int diff = id2 - id1;
+	// 				if (abs(diff) == 1)
+	// 				{
+	// 					// elastic force
+	// 					btVector3 dir = (node2->m_q - node1->m_q);
+	// 					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
+	// 					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*1);
+	// 					btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
+	// 					force[id1] += scaled_force;
+	// 					force[id2] -= scaled_force;
+	// 				}
+						
+	// 				// 	elif np.abs(spring.id2 - spring.id1) == 6:
+	// 				// 		spring.force_constant = K[1]
+	// 				// 	elif np.abs(spring.id2 - spring.id1) == 4:
+	// 				// 		spring.force_constant = K[2]
+	// 				// 	else:
+	// 				// 		if int(spring.id1 / 5) % 2 == 0:
+	// 				// 			spring.force_constant = K[1]
+	// 				// 		else:
+	// 				// 			spring.force_constant = K[2]
+
+					
+					
+	// 			}
+	// 			else
+	// 			{
+	// 				const btSoftBody::Link& link = psb->m_links[j];
+	// 				btSoftBody::Node* node1 = link.m_n[0];
+	// 				btSoftBody::Node* node2 = link.m_n[1];
+	// 				btScalar r = link.m_rl;
+	// 				size_t id1 = node1->index;
+	// 				size_t id2 = node2->index;
+
+	// 				// elastic force
+	// 				btVector3 dir = (node2->m_q - node1->m_q);
+	// 				btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
+	// 				btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness);
+	// 				btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
+	// 				force[id1] += scaled_force;
+	// 				force[id2] -= scaled_force;
+					
+	// 			}
+				
+	// 		}
+	// 	}
+	// }
 
 	virtual void addScaledDampingForceDifferential(btScalar scale, const TVStack& dv, TVStack& df)
 	{
