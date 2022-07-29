@@ -200,6 +200,7 @@ public:
 
 				// // build structured anisotropy
 				int diff = id2 - id1;
+				std::cout << diff << std::endl;
 				if (abs(diff) == 1)
 				{
 					// elastic force
