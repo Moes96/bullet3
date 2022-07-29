@@ -205,6 +205,16 @@ public:
 					// elastic force
 					btVector3 dir = (node2->m_q - node1->m_q);
 					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
+					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness);
+					btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
+					force[id1] += scaled_force;
+					force[id2] -= scaled_force;
+				}
+				if (abs(diff) == 25)
+				{
+					// elastic force
+					btVector3 dir = (node2->m_q - node1->m_q);
+					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
 					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*20);
 					btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
 					force[id1] += scaled_force;
@@ -234,7 +244,7 @@ public:
 					// elastic force
 					btVector3 dir = (node2->m_q - node1->m_q);
 					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
-					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness);
+					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*5);
 					btVector3 scaled_force = scaled_stiffness * (dir - dir_normalized * r);
 					force[id1] += scaled_force;
 					force[id2] -= scaled_force;
