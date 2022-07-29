@@ -185,6 +185,7 @@ public:
 			}
 
 			// // generate 3 random k and save them to txt file
+			// int rand()
 
 			
 			for (int j = 0; j < psb->m_links.size(); ++j)
@@ -201,7 +202,7 @@ public:
 
 					// // build structured anisotropy
 					int diff = id2 - id1;
-					if (abs(diff) == 26)
+					if (abs(diff) == 1)
 					{
 						// elastic force
 						btVector3 dir = (node2->m_q - node1->m_q);
