@@ -200,10 +200,11 @@ public:
 
 				// // build structured anisotropy
 				int diff = id2 - id1;
-				std::cout << diff << std::endl;
+				std::cout << "diff=" << abs(diff) << std::endl;
 				if (abs(diff) == 1)
 				{
 					// elastic force
+					std::cout << "1=" << abs(diff) << std::endl;
 					btVector3 dir = (node2->m_q - node1->m_q);
 					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
 					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness);
@@ -214,6 +215,7 @@ public:
 				if (abs(diff) == 25)
 				{
 					// elastic force
+					std::cout << "25=" << abs(diff) << std::endl;
 					btVector3 dir = (node2->m_q - node1->m_q);
 					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
 					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*20);
@@ -221,28 +223,10 @@ public:
 					force[id1] += scaled_force;
 					force[id2] -= scaled_force;
 				}
-						
-					// 	elif np.abs(spring.id2 - spring.id1) == 6:
-					// 		spring.force_constant = K[1]
-					// 	elif np.abs(spring.id2 - spring.id1) == 4:
-					// 		spring.force_constant = K[2]
-					// 	else:
-					// 		if int(spring.id1 / 5) % 2 == 0:
-					// 			spring.force_constant = K[1]
-					// 		else:
-					// 			spring.force_constant = K[2]
-
-
 				else
 				{
-					const btSoftBody::Link& link = psb->m_links[j];
-					btSoftBody::Node* node1 = link.m_n[0];
-					btSoftBody::Node* node2 = link.m_n[1];
-					btScalar r = link.m_rl;
-					size_t id1 = node1->index;
-					size_t id2 = node2->index;
-
 					// elastic force
+					std::cout << "26=" << abs(diff) << std::endl;
 					btVector3 dir = (node2->m_q - node1->m_q);
 					btVector3 dir_normalized = (dir.norm() > SIMD_EPSILON) ? dir.normalized() : btVector3(0, 0, 0);
 					btScalar scaled_stiffness = scale * (link.m_bbending ? m_bendingStiffness : m_elasticStiffness*5);
